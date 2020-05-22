@@ -63,6 +63,7 @@ def inicio():
     # ------- valida entrada menu principal
     def valida(op):
         global num_nodos
+        global num_aristas
         if (not val_num(nodos.get()) or (int(nodos.get())<0)):
             textv.set("valor no valido")
         elif(not val_num(aristas.get()) or (int(aristas.get())<0) ):
@@ -121,10 +122,17 @@ def grafo(num_aristas,num_nodos):
     
     def arreglo(nodo,nodo2):
         global contad 
+        global matriz_ad
+        global matriz_i
         arr_ord=[]
         global nod_tot
         nodos_ar.append([nodo,contad])
         nodos_ar.append([nodo2,contad])
+        matriz_i[nodo-1][contad-1]+=1
+        matriz_i[nodo2-1][contad-1]+=1
+        matriz_ad[nodo-1][nodo2-1]+=1
+        matriz_ad[nodo2-1][nodo-1]+=1
+        
         if (contad < num_aristas):
             contad+=1
             uniones()
@@ -139,7 +147,8 @@ def grafo(num_aristas,num_nodos):
                 nod_tot = num_nodos-nod_tot
             else:
                 nod_tot = 0 
-                 
+            print(matriz_ad)  
+            print(matriz_i)   
             print(arr_ord)
             frame_gra_uni.destroy()
             clasificacion_gra(arr_ord,1)
@@ -249,7 +258,7 @@ def clasificacion_gra(arreglos,op):
     #--------------------regular----------------------------------
     
     arr_grad_nod = grado_nodo(arreglos)
-    print("grado", arr_grad_nod)
+
     if nod_tot == 0:        
         for i in arr_grad_nod:
             for j in arr_grad_nod:
@@ -257,7 +266,6 @@ def clasificacion_gra(arreglos,op):
                     regular = True
     else:
         regular= True
-    print("reg", regular)
     
 
 def grado_nodo(arr_ord):
@@ -281,6 +289,7 @@ def matriz_inci():
         for j in range (0,num_aristas):
             aux.append(0)
         matriz_i.append(aux)
+    print(matriz_i)
 
 def matriz_adya():
     global num_nodos
