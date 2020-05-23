@@ -299,8 +299,10 @@ def clasificacion_gra(arreglos,op):
         var_com.set("no")
     else:
         var_com.set("si")
-    if simetrica:
-        var_sim.set("no")
+    if regular:
+        var_reg.set("no")
+    else:
+        var_reg.set("si")
     
     #-------------------
     Label(frame_clasification,text="Clasificaion de graficas",fg = "black",font=("CASTELLAR",12)).grid(row=0,column = 0, pady =35, padx= 30, sticky= "e")
@@ -314,6 +316,7 @@ def clasificacion_gra(arreglos,op):
     textsimple= Label(frame_clasification,textvar = var_simple,fg = "black",font=("Arial",13)).grid(row = 1, column= 1, pady = 15,sticky="w")
     textgen= Label(frame_clasification,textvar = var_gen,fg = "black",font=("Arial",13)).grid(row = 2, column= 1, pady = 15,sticky="w")
     textconec= Label(frame_clasification,textvar = var_conec,fg = "black",font=("Arial",13)).grid(row = 3, column= 1, pady = 15,sticky="w")
+    textdesc= Label(frame_clasification,textvar = var_desc,fg = "black",font=("Arial",13)).grid(row = 4, column= 1, pady = 15,sticky="w")
 
 def grado_nodo():
     global matriz_ad
