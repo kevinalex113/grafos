@@ -16,9 +16,11 @@ frame_clasification = Frame()
 
 #variables
 contad = 1
+matriz_acc=[]
 matriz_i=[]
 matriz_ad=[]
 nodos_ar=[]
+arr_grad_nod=[]
 #grados_nod=[]
 nod_tot=1
 num_nodos=int()
@@ -147,8 +149,8 @@ def grafo(num_aristas,num_nodos):
                 nod_tot = num_nodos-nod_tot
             else:
                 nod_tot = 0 
-            print(matriz_ad)  
-            print(matriz_i)   
+            print(matriz_i)  
+            print(matriz_ad)   
             print(arr_ord)
             frame_gra_uni.destroy()
             clasificacion_gra(arr_ord,1)
@@ -223,6 +225,13 @@ def ordena(arreglo):
 #-----------------clasificacion de graficas ---------------------------
 
 def clasificacion_gra(arreglos,op):
+    var_simple=StringVar()
+    var_gen=StringVar()
+    var_conec=StringVar()
+    var_desc=StringVar()
+    var_reg=StringVar()
+    var_com=StringVar()
+    global arr_grad_nod
     frame_clasification.pack()
     
     simp_or_gen = False
@@ -230,7 +239,7 @@ def clasificacion_gra(arreglos,op):
     regular=False
     completa=False
     simetrica=False
-    balanceada=False
+    
     verificadorBucle=0
     verificadorParalelas=0
     
@@ -257,28 +266,66 @@ def clasificacion_gra(arreglos,op):
         
     #--------------------regular----------------------------------
     
-    arr_grad_nod = grado_nodo(arreglos)
+    arr_grad_nod = grado_nodo()
 
     if nod_tot == 0:        
         for i in arr_grad_nod:
             for j in arr_grad_nod:
-                if i[1]!= [1]:
+                if i != j:
                     regular = True
     else:
         regular= True
-    
 
-def grado_nodo(arr_ord):
-    global num_nodos
-    arr_grad_nod=[]
-    aux=0
-    for i in range (1,num_nodos+1):
-        for j in arr_ord:
-            if j[0]== i:
-                aux+=1
-        arr_grad_nod.append([i,aux])
+    #----------------------completa----------------------------
+    
+    if not ( nod_tot == 0 and num_aristas == (num_nodos*(num_nodos-1)/2)):
+         completa = True
+    
+    matriz_acce()
+    if simp_or_gen:
+        var_simple.set("no")
+        var_gen.set( "si")
+    else:
+        var_simple.set("si")
+        var_gen.set("no")
+        
+    if con_or_desc:
+        var_conec.set("no")
+        var_desc.set("si")
+    else:
+        var_conec.set("si")
+        var_desc.set("no")
+    if completa:
+        var_com.set("no")
+    else:
+        var_com.set("si")
+    if simetrica:
+        var_sim.set("no")
+    
+    #-------------------
+    Label(frame_clasification,text="Clasificaion de graficas",fg = "black",font=("CASTELLAR",12)).grid(row=0,column = 0, pady =35, padx= 30, sticky= "e")
+    Label(frame_clasification,text = " Simple: ",fg = "black",font=("Arial",13)).grid(row = 1, column= 0, padx = 15, pady= 15)
+    Label(frame_clasification,text = " General: ",fg = "black",font=("Arial",13)).grid(row = 2, column= 0, padx = 15, pady= 15)
+    Label(frame_clasification,text = " Conectada: ",fg = "black",font=("Arial",13)).grid(row = 3, column= 0, padx = 15, pady= 15)
+    Label(frame_clasification,text = " Desconectada: ",fg = "black",font=("Arial",13)).grid(row = 4, column= 0, padx = 15, pady= 15)
+    Label(frame_clasification,text = " Regular: ",fg = "black",font=("Arial",13)).grid(row = 5, column= 0, padx = 15, pady= 15)
+    Label(frame_clasification,text = " Completa: ",fg = "black",font=("Arial",13)).grid(row = 6, column= 0, padx = 15, pady= 15)
+    
+    textsimple= Label(frame_clasification,textvar = var_simple,fg = "black",font=("Arial",13)).grid(row = 1, column= 1, pady = 15,sticky="w")
+    textgen= Label(frame_clasification,textvar = var_gen,fg = "black",font=("Arial",13)).grid(row = 2, column= 1, pady = 15,sticky="w")
+    textconec= Label(frame_clasification,textvar = var_conec,fg = "black",font=("Arial",13)).grid(row = 3, column= 1, pady = 15,sticky="w")
+
+def grado_nodo():
+    global matriz_ad
+    global arr_grad_nod
+    for i in range(0,num_nodos):
         aux=0
+        for j in range(0,num_nodos):
+            aux+=matriz_ad[i][j]
+        arr_grad_nod.append(aux)
     return arr_grad_nod
+            
+        
     
 def matriz_inci():
     global num_nodos
@@ -289,7 +336,7 @@ def matriz_inci():
         for j in range (0,num_aristas):
             aux.append(0)
         matriz_i.append(aux)
-    print(matriz_i)
+    
 
 def matriz_adya():
     global num_nodos
@@ -299,6 +346,22 @@ def matriz_adya():
         for j in range (0, num_nodos):
             aux.append(0)
         matriz_ad.append(aux)
+        
+def matriz_acce():
+    global num_nodos
+    global matriz_acc
+    global arr_grad_nod
+    print(arr_grad_nod)
+    for i in range (0,len(arr_grad_nod)):
+        aux=[]
+        for j in range(0,len(arr_grad_nod)):
+            if arr_grad_nod[i] == 0 or arr_grad_nod[j]  == 0:
+                aux.append(0)
+            else:
+                aux.append("+")
+            
+        matriz_acc.append(aux)
+        
         
     
     
